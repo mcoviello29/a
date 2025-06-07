@@ -1,20 +1,31 @@
 local M = {}
 -- Crash locations automatically populated at startup
 local crashPoints = {}
+local defaultPoints = {
+  {pos = vec3(100, 200, 50), rot = quat(0, 0, 0, 1)},
+  {pos = vec3(-150, 75, 60),  rot = quat(0, 0, 1, 0)},
+  {pos = vec3(50, -300, 45),  rot = quat(0, 1, 0, 0)},
+  {pos = vec3(200, 100, 40),  rot = quat(1, 0, 0, 0)},
+}
 
 -- Attempts to gather crash points from map spawn spheres
 local function initCrashPoints()
   crashPoints = {}
   local spawns = scenetree.findClassObjects('SpawnSphere')
-  if not spawns then return end
-  for _, id in ipairs(spawns) do
-    local obj = scenetree.findObjectById(id)
-    if obj then
-      table.insert(crashPoints, {
-        pos = obj:getPosition(),
-        rot = obj:getRotation(),
-      })
+  if spawns then
+    for _, id in ipairs(spawns) do
+      local obj = scenetree.findObjectById(id)
+      if obj then
+        table.insert(crashPoints, {
+          pos = obj:getPosition(),
+          rot = obj:getRotation(),
+        })
+      end
     end
+  end
+  -- If no spawns were found, fall back to built-in points
+  if #crashPoints == 0 then
+    crashPoints = defaultPoints
   end
 end
 

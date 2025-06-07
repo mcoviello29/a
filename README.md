@@ -3,9 +3,9 @@
 This project contains a simple Lua script that teleports your vehicle to a random **crash** location in BeamNG.drive. These spots are intended to leave the car in awkward positions so you can tow it back to a garage or recovery point. The mod now comes with a tiny UI app so you can trigger a random crash with a single button press.
 
 ## How it works
-- When the mod loads it searches the map for available spawn spheres and uses them as crash locations.
+- When the mod loads it searches the map for available spawn spheres and uses them as crash locations. If none are found, a few built-in sample points are used instead.
 - The script chooses a random location and moves the active vehicle there when triggered.
-- You can still add extra spots at runtime with `crashTeleport.addCrashPoint(pos, rot)`.
+- You can still add extra spots at runtime with `crash_teleport.addCrashPoint(pos, rot)`.
 
 ## Installation
 

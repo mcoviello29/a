@@ -5,7 +5,7 @@ angular.module('beamng.apps').directive('crashTeleportApp', ['bngApi', function(
     restrict: 'EA',
     link: function(scope) {
       scope.teleport = function() {
-        bngApi.engineLua('crashTeleport.teleportRandomCrash()')
+        bngApi.engineLua('crash_teleport.teleportRandomCrash()')
       }
     }
   }
