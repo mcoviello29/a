@@ -1,11 +1,26 @@
 local M = {}
+-- Crash locations automatically populated at startup
+local crashPoints = {}
 
--- Example crash locations (adjust to match your map)
-local crashPoints = {
-  {pos = vec3(100, 200, 50), rot = quat(0, 0, 0, 1)},
-  {pos = vec3(-150, 75, 60),  rot = quat(0, 0, 1, 0)},
-  {pos = vec3(50, -300, 45),  rot = quat(0, 1, 0, 0)},
-}
+-- Attempts to gather crash points from map spawn spheres
+local function initCrashPoints()
+  crashPoints = {}
+  local spawns = scenetree.findClassObjects('SpawnSphere')
+  if not spawns then return end
+  for _, id in ipairs(spawns) do
+    local obj = scenetree.findObjectById(id)
+    if obj then
+      table.insert(crashPoints, {
+        pos = obj:getPosition(),
+        rot = obj:getRotation(),
+      })
+    end
+  end
+end
+
+local function onInit()
+  initCrashPoints()
+end
 
 --- Teleports the player's vehicle to a random crash point
 local function teleportRandomCrash()
@@ -16,6 +31,25 @@ local function teleportRandomCrash()
   vehicle:setPosition(target.pos, target.rot)
 end
 
+-- Adds a new crash location at runtime
+local function addCrashPoint(pos, rot)
+  table.insert(crashPoints, {pos = pos, rot = rot or quat(0, 0, 0, 1)})
+end
+
+-- Clears all crash points
+local function clearCrashPoints()
+  crashPoints = {}
+end
+
+-- Returns all crash points (useful for debugging)
+local function getCrashPoints()
+  return crashPoints
+end
+
 M.teleportRandomCrash = teleportRandomCrash
+M.addCrashPoint = addCrashPoint
+M.clearCrashPoints = clearCrashPoints
+M.getCrashPoints = getCrashPoints
+M.onInit = onInit
 return M
 
