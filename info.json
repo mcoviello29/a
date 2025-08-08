@@ -1,0 +1,7 @@
+{
+  "Name": "Crash Teleport Tool",
+  "Author": "OpenAI Codex",
+  "Description": "Teleport your vehicle to random crash scenes via a single button.",
+  "Version": "1.1",
+  "mainScript": "lua/main.lua"
+}
